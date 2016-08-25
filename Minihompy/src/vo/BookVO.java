@@ -8,6 +8,7 @@ public class BookVO {
 	private int writerUserNo;
 	private String content;
 	private Date regDate;
+	private int count;
 	
 	public int getBookNo() {
 		return bookNo;
