@@ -16,13 +16,32 @@
     <div class="container" id="maincontainer">
       <div class="page-header">
       	<!-- 제목 -->
-        <h1>제목ㄱㄱㄱㄱㄱ</h1>
+        <h1>방명록</h1>
       </div>
     </div>
-
+    
     <footer class="footer">
       <div class="container">
         <!-- 내용 -->
+        <a href='${pageContext.request.contextPath}/bookWriteForm'>방명록 남기기</a>
+        <table width='80%' border='1'>
+        
+        <c:forEach var="book" items="${list}">
+        	<tr>
+			<td><c:out value="${book.content}"/></td>
+			<td><c:out value="${book.writer}" /></td>
+			<td>
+				<fmt:formatDate var="regDate" value="${book.regDate}" pattern="yyyy-MM-dd"/>
+				<c:out value="${regDate}" />
+			</td>
+			</tr>
+		</c:forEach>
+		<c:if test="${empty list}">
+			<tr><td colspan='4'>아직 방명록이 없네요! 하나 써보세요ㅎㅎ</td></tr>
+		</c:if>
+		</table>
+		
+
       </div>
     </footer>
 </div>
