@@ -120,3 +120,11 @@ ALTER TABLE minihompy_friend ADD CONSTRAINT friend_c_fk FOREIGN KEY(code_no, gro
 
 insert into minihompy_user (user_no, id, pass, name, birth, gender)
 values (s_minihompy_user_no.nextval, 'admin', 'admin', '관리자', '2016', '1');
+
+select * from MINIHOMPY_USER;
+
+
+
+		select * 
+		  from minihompy_book
+		 order by book_no desc

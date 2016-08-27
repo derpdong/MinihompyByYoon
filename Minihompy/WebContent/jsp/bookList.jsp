@@ -41,7 +41,6 @@
 		</c:if>
 		</table>
 		
-
       </div>
     </footer>
 </div>

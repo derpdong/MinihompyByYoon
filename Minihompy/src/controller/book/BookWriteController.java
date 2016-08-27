@@ -13,7 +13,7 @@ import javax.xml.ws.Response;
 
 import dao.BookDAO;
 import vo.BookVO;
-@WebServlet("/writebook")
+@WebServlet("/bookWrite")
 public class BookWriteController extends HttpServlet {
 
 	@Override
@@ -21,11 +21,12 @@ public class BookWriteController extends HttpServlet {
 		
 		BookVO book= new BookVO();
 		book.setWriterUserNo(1);
+		book.setUserNo(21);
 		book.setContent("content");
 		
 		//게시물 저장
 		BookDAO dao = new BookDAO();
 		dao.insertBook(book);
-		resp.sendRedirect(req.getContextPath()+"/showBook");
+		resp.sendRedirect("/bookList");
 	}
 }
