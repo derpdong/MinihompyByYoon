@@ -293,27 +293,11 @@ values(s_minihompy_account_sort_no.nextval, 1, 54, to_date('16/06/27 15:10:17','
 
 
 
-
-
-
-
-
-		select *
-		from(
-			select account.*, catagory.name		
+			select account.*, category.name		
 			  from MINIHOMPY_ACCOUNT account
-			  	   , minihompy_category catagory
-			 where USER_NO = 1
-			   and account.category_no = catagory.category_no	
+			  	   , minihompy_category category
+			 where USER_NO = 1 
+			   and account.category_no = 1 or account.category_no = 5 or account.category_no = 7		  
 		  order by TRAN_DATE desc
-			)
-		where ROWNUM <= 10
-		;
-
-
-
-
-
-
 
 
