@@ -1,6 +1,4 @@
-/config/
 /controller/
 /dao/
-/filter/
-/util/
+/config/
 /vo/

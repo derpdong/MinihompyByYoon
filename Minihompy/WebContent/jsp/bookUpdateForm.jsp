@@ -22,14 +22,7 @@
 	p { display: inline; position: relative; left: 110px; }
 </style>
 <script>
-	$(document).ready(function() {
-		$("#submit").click(function(e) {
-			if($("#pass").val() != $("#passConfirm").val()) {
-				e.preventDefault();
-				alert("비밀번호가 일치하지 않습니다.");
-			}
-		})
-	});
+	
 </script>
 </head>
 <body>
@@ -39,38 +32,22 @@
     <div class="container" id="maincontainer">
       <div class="page-header">
       	<!-- 제목 -->
-        <h1>회원가입</h1>
+        <h1>내가 쓴 방명록 수정하기</h1>
       </div>
     </div>
 
     <footer class="footer">
       <div class="container">
         <!-- 내용 -->
-        <form action="join" method="post" enctype="multipart/form-data">
-        	<input type="text" name="id">
-        	<span class="myactive">아이디</span>
-      		<input type="password" name="pass" id="pass">
-        	<span class="myactive">비밀번호</span>
-      		<input type="password" name="pass" id="passConfirm">
-        	<span class="myactive">비밀번호확인</span>
-        	<input type="text" name="name">
-        	<span class="myactive">이름</span>
-        	<select name="birth" id="selectBox">
-   				<c:forEach var="year" begin="1980" end="2016" >
-   					<option value="<c:out value="${year}"/>"><c:out value="${year}"/></option>
-   				</c:forEach>
-   			</select>
-   			<span>생년</span>
-   			<input type="radio" name="gender" value="M" checked="checked"> <p class="gender">남자</p>
-   			<input type="radio" name="gender" value="W">  <p class="gender">여자</p>
-   			<span>성별</span>
-   			<input type="file" name="profileFile">
-   			<span>프로필사진</span>
-   			<textarea rows="10" cols="50" name="intro"></textarea>
-   			<span id="intro">자기소개</span>
-   			<button type="submit" id="submit">가입</button>
-        	<button type="reset">취소</button>
-        </form>
+        
+     <form action='${pageContext.request.contextPath}/bookUpdate' method='POST'>
+           글쓴이 : <input type='text' value="${book.writerName}" name='writerName' readonly='readonly' /><br>
+           내용 : <textarea rows='10' cols='50' name='content'>${book.content}</textarea><br>
+     <input type='hidden' name='bookNo' value='${book.bookNo}'/>
+     <button type='submit'>수정</button>
+     </form>
+        
+       
       </div>
     </footer>
 </div>
