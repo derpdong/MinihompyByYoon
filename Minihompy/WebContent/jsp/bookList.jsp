@@ -28,12 +28,23 @@
         
         <c:forEach var="book" items="${list}">
         	<tr>
+			<td><c:out value="${book.writerName}" /></td>
 			<td><c:out value="${book.content}"/></td>
-			<td><c:out value="${book.writer}" /></td>
 			<td>
 				<fmt:formatDate var="regDate" value="${book.regDate}" pattern="yyyy-MM-dd"/>
 				<c:out value="${regDate}" />
 			</td>
+			<c:choose>
+				<c:when test="${book.writerUserNo == 1 }">
+					<td>
+						<a href='${pageContext.request.contextPath}/bookUpdateForm?bookNo=<c:out value="${book.bookNo}"/>'>수정하기</a>
+						<a href='${pageContext.request.contextPath}/bookDelete?bookNo=<c:out value="${book.bookNo}" />'>삭제하기</a>
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
+			</c:choose>
 			</tr>
 		</c:forEach>
 		<c:if test="${empty list}">

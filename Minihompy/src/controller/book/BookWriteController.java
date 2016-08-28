@@ -18,15 +18,17 @@ public class BookWriteController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		
 		BookVO book= new BookVO();
-		book.setWriterUserNo(1);
-		book.setUserNo(21);
-		book.setContent("content");
+		book.setUserNo(1);
+		book.setWriterName(req.getParameter("writerUserName"));
+		book.setContent(req.getParameter("content"));
+		book.setWriterUserNo(Integer.parseInt(req.getParameter("writerUserNo")));
 		
 		//게시물 저장
-		BookDAO dao = new BookDAO();
-		dao.insertBook(book);
-		resp.sendRedirect("/bookList");
+		new BookDAO().insertBook(book);
+		
+		resp.sendRedirect("bookList");
 	}
 }

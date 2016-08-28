@@ -6,10 +6,23 @@
 		<result column="BOOK_NO" property="bookNo"/>
 		<result column="USER_NO" property="userNo"/>
 		<result column="WRITER_USER_NO" property="writerUserNo"/>
+		<result column="NAME" property="writerName"/>
+		<result column="CONTENT" property="content"/>
+		<result column="REG_DATE" property="regDate"/>
+		
+	</resultMap>
+	
+	<resultMap type="bookMain" id="bookMainMap">
+		<result column="BOOK_NO" property="bookNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="WRITER_USER_NO" property="writerUserNo"/>
+		<result column="NAME" property="writerName"/>
 		<result column="CONTENT" property="content"/>
 		<result column="REG_DATE" property="regDate"/>
 	</resultMap>
 	
+	
+
 <!-- 	create table minihompy_book ( -->
 <!-- 	book_no number primary key, -->
 <!-- 	user_no number, -->
@@ -19,10 +32,12 @@
 <!-- ); -->
 
 <!-- 전체 방명록 조회 -->
-	<select id="selectBook" resultMap="bookMap">
-		select * 
-		  from minihompy_book
-		 order by book_no desc
+	<select id="selectBook" parameterType="int" resultMap="bookMainMap">
+		 select b.*, u.name
+		from minihompy_user u, MINIHOMPY_BOOK b
+		where b.WRITER_USER_NO = u.user_no
+		  and b.user_no = #{userNo}
+		order by book_no desc	 
 	</select>
 	
 	
@@ -39,6 +54,13 @@
 			   content = #{content}
 		 where book_no = #{bookNo}
 	</update>
+	<!-- 방명록 수정을 위한 방명록 번호로 조회 -->
+	<select id="selectBookByNo" parameterType="int" resultMap="bookMap">
+		select b.*, u.name
+		from minihompy_book b, minihompy_user u
+		where b.book_no = #{bookNo}
+		and u.user_no = b.writer_user_no
+	</select>
 	
 	<!-- 방명록 삭제 -->
 	<delete id="deleteBook" parameterType="int">

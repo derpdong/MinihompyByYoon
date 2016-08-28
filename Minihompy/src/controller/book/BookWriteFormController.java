@@ -17,5 +17,4 @@ public class BookWriteFormController extends HttpServlet {
 		RequestDispatcher rd= req.getRequestDispatcher("/jsp/bookWriteForm.jsp");
 		rd.forward(req, resp);
 	}
-
 }
