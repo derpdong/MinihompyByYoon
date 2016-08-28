@@ -28,6 +28,7 @@
 
 	<mappers>
 		<mapper resource="config/sqlmap/oracle/book.xml"/>
+		<mapper resource="config/sqlmap/oracle/account.xml"/>
 	</mappers>
 	
 </configuration>

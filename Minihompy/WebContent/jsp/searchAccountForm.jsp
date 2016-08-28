@@ -105,7 +105,7 @@ width: 150px;
 						<label for="categoryNo53"><input type="checkbox" name="categoryNo" value="53" id="categoryNo53">금융소득(계약만기)</label>
 						<label for="categoryNo54"><input type="checkbox" name="categoryNo" value="54" id="categoryNo54">임대소득</label>
 						<label for="categoryNo55"><input type="checkbox" name="categoryNo" value="55" id="categoryNo55">기타소득</label>
-					<br>
+					
 					<hr>
 					기간
 						<input type="text" name="startDate" value="">
