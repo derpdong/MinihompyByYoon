@@ -10,6 +10,8 @@
 	<typeAliases>
 		<typeAlias alias="book" type="vo.BookVO" />
 		<typeAlias alias="bookMain" type="vo.BookMainVO" />
+		<typeAlias alias="account" type="vo.AccountVO" />
+		<typeAlias alias="aSearch" type="vo.AccountSearchVO" />
 	</typeAliases>
 	
 	<environments default="development">

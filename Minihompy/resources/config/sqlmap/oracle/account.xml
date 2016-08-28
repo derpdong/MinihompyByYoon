@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.AccountDAO">
+	<resultMap id="accountMap" type="account">
+		<result column="SORT_NO" property="sortNo" />
+		<result column="USER_NO" property="userNo" />
+		<result column="NAME" property="categoryName" />
+		<result column="CATEGORY_NO" property="categoryNo" />
+		<result column="TRAN_DATE" property="tranDate" />
+		<result column="PAYMENT" property="payment" />
+		<result column="DESCRIPTION" property="description" />
+		<result column="NOTE" property="note" />
+		<result column="AMOUNT" property="amount" />
+	</resultMap>
+	
+	<!-- 최근 10개 거래조회 -->
+	
+	<select id="selectRecentAccount" parameterType="int" resultMap="accountMap">
+		select *
+		from(
+			select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where USER_NO = #{USER_NO}
+			   and account.category_no = category.category_no	
+		  order by TRAN_DATE desc
+			)
+		where ROWNUM <![CDATA[<=]]> 10
+	</select>
+	
+	<!-- 거래 추가 -->
+	<insert id="insertAccount" parameterType="account">
+	    insert into MINIHOMPY_ACCOUNT(SORT_NO, USER_NO, CATEGORY_NO, TRAN_DATE
+	    								, PAYMENT, DESCRIPTION, NOTE, AMOUNT) 
+	    values (s_minihompy_account_sort_no.nextVal, #{userNo}, #{categoryNo}, #{tranDate}
+	    		, #{payment}, #{description}, #{note}, #{amount})                               
+	</insert>
+	
+	<!-- 거래 수정 -->
+	<update id="updateAccount" parameterType="account">
+		update MINIHOMPY_ACCOUNT
+		   set
+		   	   CATEGORY_NO = #{categoryNo},
+			   TRAN_DATE = #{tranDate},
+		   	   PAYMENT = #{payment},
+			   DESCRIPTION = #{description},
+		   	   NOTE = #{note},		   	   
+			   AMOUNT = #{amount}
+		 where SORT_NO = #{sortNo}
+	</update>
+	
+	<!-- 거래 삭제 -->
+	<delete id="deleteAccount" parameterType="int">
+		delete from MINIHOMPY_ACCOUNT
+		where sort_no = #{sortNo}
+	</delete>
+	
+	
+	<!-- 거래 1건 detail -->
+	<select id="selectAccountByNo" parameterType="int" resultMap="accountMap">
+		select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where SORT_NO = #{NO}
+			   and account.category_no = category.category_no
+	</select>
+	
+	<!-- ############################################################# -->
+	<!-- 검색하기 -->
+	<!-- ############################################################# -->
+
+	<!-- 기간별 검색하기 -->
+	<select id="selectAccountByTerm" parameterType="aSearch" resultMap="accountMap">
+		select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where USER_NO = #{userNo} 
+			   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+			   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+			   and account.category_no = category.category_no
+		  order by TRAN_DATE desc
+	</select>
+	
+	<select id="selectAccountByTermAndCategory" parameterType="aSearch" resultMap="accountMap">
+		select sum(AMOUNT) AMOUNT, name
+		  from (				   
+				   select account.*, category.name		
+			         from MINIHOMPY_ACCOUNT account
+			  	 		  , minihompy_category category
+					 where USER_NO = #{userNo} 
+					   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+					   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+					   and account.category_no = category.category_no			   			
+			  )			
+		  group by name
+		  order by AMOUNT
+	</select>
+	
+<!-- 	유형별 검색 -->
+	<select id="selectAccountByPayment" parameterType="aSearch" resultMap="accountMap">
+			select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where USER_NO = #{userNo} 
+			   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+			   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+			   and account.category_no = category.category_no
+			   and PAYMENT = #{payment}
+		  order by TRAN_DATE desc	
+	</select>
+
+	<select id="selectAccountByPaymentAndCategory" parameterType="aSearch" resultMap="accountMap">
+		select sum(AMOUNT) AMOUNT, name
+		  from (				   
+			select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where USER_NO = #{userNo} 
+			   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+			   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+			   and account.category_no = category.category_no
+			   and PAYMENT = #{payment}
+		  order by TRAN_DATE desc				   			
+			  )			
+		  group by name
+		  order by AMOUNT
+	</select>
+	
+<!-- 	카테고리별 검색 -->
+	<select id="searchAccountByCategory" parameterType="aSearch" resultMap="accountMap">
+			select account.*, category.name		
+			  from MINIHOMPY_ACCOUNT account
+			  	   , minihompy_category category
+			 where USER_NO = #{userNo}
+			   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+			   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+			   and account.category_no = category.category_no
+			   and account.category_no in
+			   <foreach collection="cateList" item="item" open="(" close=")" separator=",">
+			   		#{item}
+			   </foreach>			  
+		  order by TRAN_DATE desc
+	</select>
+	
+	<select id="searchAccountByCategoryAndCategory" parameterType="aSearch" resultMap="accountMap">
+		select sum(AMOUNT) AMOUNT, name
+		  from (
+				select account.*, category.name		
+				  from MINIHOMPY_ACCOUNT account
+				  	   , minihompy_category category
+				 where USER_NO = #{userNo}
+				   and TRAN_DATE <![CDATA[>=]]> #{startDay}
+				   and TRAN_DATE <![CDATA[<=]]> #{endDay}
+				   and account.category_no = category.category_no
+				   and account.category_no in
+				   <foreach collection="cateList" item="item" open="(" close=")" separator=",">
+				   		#{item}
+				   </foreach>			  
+			  order by TRAN_DATE desc
+		  			  )			
+		  group by name
+		  order by AMOUNT
+	</select>
+	
+	
+
+</mapper>
